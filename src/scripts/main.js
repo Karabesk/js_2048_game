@@ -10,6 +10,23 @@ const messageStart = document.querySelector('.message-start');
 const messageWin = document.querySelector('.message-win');
 const messageLose = document.querySelector('.message-lose');
 
+function addDataPositions() {
+  const cells = document.querySelectorAll('.field-cell');
+  let index = 0;
+
+  for (let row = 0; row < 4; row++) {
+    for (let col = 0; col < 4; col++) {
+      if (cells[index]) {
+        cells[index].dataset.position = `${row}-${col}`;
+      }
+      index++;
+    }
+  }
+}
+
+addDataPositions(); // Додає атрибути data-position
+updateBoard(); // Оновлює значення в комірках
+
 function updateBoard() {
   const state = game.getState();
 
@@ -23,8 +40,8 @@ function updateBoard() {
         return;
       }
 
-      cell.textContent = value !== 0 ? value : '';
       updateCellClass(cell, value);
+      cell.textContent = value !== 0 ? value : '';
     });
   });
 }

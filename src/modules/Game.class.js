@@ -17,16 +17,15 @@ class Game {
     const merged = [];
     let scoreIncrement = 0;
 
-    // eslint-disable-next-line no-param-reassign
-    row = row.filter((val) => val !== 0);
+    const filteredRow = row.filter((val) => val !== 0);
 
-    for (let i = 0; i < row.length; i++) {
-      if (row[i] === row[i + 1]) {
-        merged.push(row[i] * 2);
-        scoreIncrement += row[i] * 2;
+    for (let i = 0; i < filteredRow.length; i++) {
+      if (filteredRow[i] === filteredRow[i + 1]) {
+        merged.push(filteredRow[i] * 2);
+        scoreIncrement += filteredRow[i] * 2;
         i++;
       } else {
-        merged.push(row[i]);
+        merged.push(filteredRow[i]);
       }
     }
 
@@ -46,7 +45,6 @@ class Game {
 
     const rotateBoard = (board) =>
       board[0].map((_, col) => board.map((row) => row[col]));
-    let moved = false;
 
     if (['up', 'down'].includes(direction)) {
       this.board = rotateBoard(this.board);
@@ -63,10 +61,6 @@ class Game {
         newRow.reverse();
       }
 
-      if (JSON.stringify(row) !== JSON.stringify(newRow)) {
-        moved = true;
-      }
-
       return newRow;
     });
 
@@ -74,9 +68,7 @@ class Game {
       this.board = rotateBoard(this.board);
     }
 
-    if (moved) {
-      this.addRandomTile();
-    }
+    this.addRandomTile();
     this.checkGameOver();
   }
 
