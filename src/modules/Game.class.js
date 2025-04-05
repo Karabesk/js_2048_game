@@ -45,6 +45,10 @@ class Game {
 
     const rotateBoard = (board) =>
       board[0].map((_, col) => board.map((row) => row[col]));
+    const unrotateBoard = (board) =>
+      board[0].map((_, colIndex) => board.map((row) => row[colIndex]));
+
+    const boardBefore = JSON.stringify(this.board);
 
     if (['up', 'down'].includes(direction)) {
       this.board = rotateBoard(this.board);
@@ -55,20 +59,25 @@ class Game {
         direction === 'right' || direction === 'down'
           ? [...row].reverse()
           : [...row];
+
       const newRow = this.slideAndMerge(processedRow);
 
-      if (direction === 'right' || direction === 'down') {
-        newRow.reverse();
-      }
-
-      return newRow;
+      return direction === 'right' || direction === 'down'
+        ? newRow.reverse()
+        : newRow;
     });
 
     if (['up', 'down'].includes(direction)) {
-      this.board = rotateBoard(this.board);
+      this.board = unrotateBoard(this.board);
     }
 
-    this.addRandomTile();
+    const boardAfter = JSON.stringify(this.board);
+    const moved = boardBefore !== boardAfter;
+
+    if (moved) {
+      this.addRandomTile();
+    }
+
     this.checkGameOver();
   }
 
